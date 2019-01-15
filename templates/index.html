@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FedEvent</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/bootstrap.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/style.css') }}">
+    <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+</head>
+<body background="https://www.transparenttextures.com/patterns/bright-squares.png">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <a class="navbar-brand" href="/">FedEvent</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="btn btn-primary mr-sm-2" href="/eventForm">Create an Event</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about">About</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container" style="padding-top: 10px;">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-primary" role="alert">
+            {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <div class="card">
+            <div class="card-body">
+                {% block form %}
+                <div class="jumbotron">
+                    <h1 class="display-4">Events for the Fediverse</h1>
+                    <p class="lead">Schedule events and have notifications sent to Fediverse subscribers</p>
+                    <hr class="my-4">
+                    <p>Works with Mastodon, Pleroma and other social APub implementations.</p>
+                    <a class="btn btn-primary btn-lg" href="/about" role="button">Learn more</a>
+                </div>
+                <h3 class="text-center">Here's what's coming up:</h3>
+                <hr>
+                <div class="row">
+                    {% for i in list %}
+                    <div class="col">
+                        <div class="card box-shadow">
+                            <h4 class="card-header">
+                                {{ i.name }} <span class="badge badge-secondary float-right">{{i.subcount}}</span>
+                            </h4>
+                            <div class="card-body">
+                                <p class="card-text">{{ i.desc }}</p>
+                                <span class="align-middle">{{ i.date }} @ {{ i.time }}</span>
+                                <a href="/showEvent/{{ i.id }}" class="btn btn-primary float-right">Details</a>
+                            </div>
+                            <div class="card-footer text-muted">{{ i.creator }}</div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    
+                </div>
+            </div>
+            {% endblock %}
+        </div>
+    </div>
+</body>
+</html>
